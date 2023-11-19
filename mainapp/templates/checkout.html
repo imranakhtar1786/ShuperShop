@@ -1,0 +1,140 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}
+<title>ShuperShop | Checkout</title>
+{% endblock %}
+{% block body %}
+    <!-- breadcrumb part start-->
+    <section class="breadcrumb_part">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <h2>checkout</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb part end-->
+
+  <!--================Checkout Area =================-->
+  <section class="checkout_area section_padding pt-3 pb-3 ">
+    {% if cart %}
+    <div class="container-fluid">
+        <div class="row">
+          <div class="col-lg-6">
+              <h3 class="text-center p-3 ">Billing Details</h3>
+            <table class="table"> 
+              <tr> 
+                  <th>Name</th>
+                  <td>{{buyer.name}}</td>
+              </tr>
+              <tr> 
+                  <th>Username</th>
+                  <td>{{buyer.username}}</td>
+              </tr>
+              <tr> 
+                  <th>Email</th>
+                  <td>{{buyer.email}}</td>
+              </tr>
+              <tr> 
+                  <th>Phone</th>
+                  <td>{{buyer.phone}}</td>
+              </tr>
+              <tr> 
+                  <th>Adress</th>
+                  <td>{{buyer.address}}</td>
+              </tr>
+              <tr> 
+                  <th>Pin</th>
+                  <td>{{buyer.pin}}</td>
+              </tr>
+              <tr> 
+                  <th>City</th>
+                  <td>{{buyer.city}}</td>
+              </tr>
+              <tr> 
+                  <th>State</th>
+                  <td>{{buyer.state}}</td>
+              </tr>
+              <tr> 
+                  <td colspan="2"><a href="{% url "update-profile" %}" class="btn_3 text-center " style="width:100%">Update Profile</a></td>
+              </tr>
+          </table>
+          </div>
+
+          <div class="col-lg-6">
+            <div class="order_box">
+              <h2>Your Order</h2>
+              <ul class="list">
+                <table class="table">
+                  <tr>
+                    <th> Product</th>
+                    <th> Price X Qty</th>
+                    <th> Total</th>
+                  </tr>
+                  {% for value in cart.values %}
+                  <tr>
+                    <td>{{value.name}}</td>
+                    <td>&#8377;{{value.price}} X {{value.qty}}</td>
+                    <td>&#8377;{{value.total}}</td>
+                  </tr>
+                  {% endfor %}
+                </table>
+                </li>
+              </ul>
+              <hr>
+              <ul class="list list_2">
+                <li>
+                  <a>Subtotal
+                    <span>&#8377;{{subtotal}}</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Shipping
+                    <span> &#8377;{{shipping}}</span>
+                  </a>
+                </li>
+                <li>
+                  <a>Total
+                    <span>&#8377;{{total}}</span>
+                  </a>
+                </li>
+              </ul>
+              <hr>
+              <form action="" method="post">
+              {% csrf_token %}
+              <p>Payment Mode</p>
+              <div class="payment_item">
+                <div class="radion_btn">
+                  <input type="radio" id="f-option5" checked name="mode" value="COD"/>
+                  <label for="f-option5">COD</label>
+                  <div class="check"></div>
+                </div>
+              </div>
+              <div class="payment_item active">
+                <div class="radion_btn">
+                  <input type="radio" id="f-option6" name="mode"  value="NetBanking"/>
+                  <label for="f-option6">NetBanking/Card/UPI</label>
+                  <img src="{% static "img/product/single-product/card.jpg" %}" alt="" />
+                  <div class="check"></div>
+                </div>
+              </div>
+              <hr>
+              <button type="submit" class="btn_3 w-100 ">Proceed to Place Order</button>
+            </div>
+          </form>
+          </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="my-5 text-center">
+      <p>No Items In Cart</p>
+      <a href="/shop/All/All/All" class="btn_3 mt-3 text-center ">Shop Now</a>
+    </div>
+    {% endif %}
+  </section>
+  <!--================End Checkout Area =================-->
+
+  {% endblock %}

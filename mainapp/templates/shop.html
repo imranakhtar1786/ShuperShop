@@ -1,0 +1,127 @@
+{% extends "index.html" %}
+{% load static %}
+{% block title %}
+<title>ShuperShop | Shop </title>
+{% endblock %}
+{% block body %}
+    <!-- breadcrumb part start-->
+    <section class="breadcrumb_part">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="breadcrumb_iner">
+                        <h2>Shop</h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- breadcrumb part end-->
+    
+    <!-- product list part start-->
+    <section class="product_list pt-5 ">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-md-3">
+                    <div class="product_sidebar">
+                        <div class="single_sedebar">
+                            <form action="{% url "search-page" %}" method="post">
+                                {% csrf_token %}
+                                <input type="text" name="search" placeholder="Search...">
+                                <i class="ti-search"></i>
+                            </form>
+                        </div>
+                        <div class="single_sedebar">
+                            <div class="select_option">
+                                <div class="select_option_list">Maincategory<i class="right fas fa-caret-down"></i> </div>
+                                <div class="select_option_dropdown">
+                                    <p><a href="/shop/All/{{sc}}/{{br}}">All</a></p>
+                                    {% for  items in  maincategory %}
+                                    <p><a href="/shop/{{items.name}}/{{sc}}/{{br}}">{{items.name}}</a></p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single_sedebar">
+                            <div class="select_option">
+                                <div class="select_option_list">Subcategory<i class="right fas fa-caret-down"></i> </div>
+                                <div class="select_option_dropdown">
+                                    <p><a href="/shop/{{mc}}/All/{{br}}">All</a></p>
+                                    {% for  items in subcategory %}
+                                    <p><a href="/shop/{{mc}}/{{items.name}}/{{br}}">{{items.name}}</a></p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="single_sedebar">
+                            <div class="select_option">
+                                <div class="select_option_list">Brands<i class="right fas fa-caret-down"></i> </div>
+                                <div class="select_option_dropdown">
+                                    <p><a href="/shop/{{mc}}/{{sc}}/All">All</a></p>
+                                    {% for  items in  brands %}
+                                    <p><a href="/shop/{{mc}}/{{sc}}/{{items.name}}">{{items.name}}</a></p>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-9">
+                    <div class="product_list">
+                        <div class="row">
+                            {% for items in product %}
+                            <div class="col-xl-3 col-lg-4 col-md-6 col-sm-12 col-12">
+                                <div class="single_product_item">
+                                    <div class="single_product_item_thumb">
+                                        <a href="/single-product/{{items.id}}"><img src="{{items.pic1.url}}" alt="#" class="img-fluid" style="height:250px;width:100%"></a>
+                                    </div>
+                                    <h3 style="height:60px"> <a href="/single-product/{{items.id}}">{{items.name}}</a> </h3>
+                                    <del class="text-danger">&#8377;{{items.baseprice}}</del>
+                                     <p>&#8377;{{items.finalprice}}<sup class="text-success"> &nbsp{{items.discount}}% off</sup></p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <div class="load_more_btn text-right mb-3">
+                            <span class="step-links">
+                                {% if product.has_previous %}
+                                    <a href="?page={{ product.previous_page_number }}" class="btn"style="color:#B08EAD;">&laquo; previous</a>
+                                    <a href="?page=1" class="btn" style="color:#B08EAD;">first</a>
+                                {% endif %}
+                        
+                                <span class="current">
+                                    Page {{ product.number }} of {{ product.paginator.num_pages }}.
+                                </span>
+                        
+                                {% if product.has_next %}
+                                    <a href="?page={{ product.paginator.num_pages }}" class="btn" style="color:#B08EAD;">last</a>
+                                    <a href="?page={{ product.next_page_number }}" class="btn" style="color:#B08EAD;">next &raquo;</a>
+                                {% endif %}
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- product list part end-->
+
+    <!-- subscribe part here -->
+    <section class="subscribe_part section_padding">
+        <div class="container-fluid">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="subscribe_part_content">
+                        <h2>Get promotions & updates!</h2>
+                        <p>Seamlessly empower fully researched growth strategies and interoperable internal or “organic” sources credibly innovate granular internal .</p>
+                        <div class="subscribe_form">
+                            <input type="email" placeholder="Enter your mail">
+                            <a href="#" class="btn_1">Subscribe</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- subscribe part end -->
+    {% endblock %}
