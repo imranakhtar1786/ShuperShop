@@ -1,4 +1,4 @@
-from django.shortcuts import render,HttpResponseRedirect
+from django.shortcuts import render,HttpResponseRedirect, HttpResponse
 from django.contrib.messages import success,error
 from django.contrib.auth.models import User
 from django.contrib.auth import login,logout,authenticate
@@ -224,29 +224,29 @@ def shop(Request,mc,sc,br):
     return render(Request,"shop.html",{"product":page_obj,"maincategory":maincategory,"subcategory":subcategory,"brands":brands,"sc":sc,"mc":mc,"br":br})
 
 def searchPage(Request):
-    if(Request.method=="POST"):
-        search=Request.POST.get("search").title()
+    if (Request.method=="POST"):
+        search=Request.POST.get("search")
         try:
-            maincategory=Maincategory.get(name=search)
+            maincategory=Maincategory.objects.get(name=search)
         except:
             maincategory=None
         try:
-            subcategory=Maincategory.get(name=search)
+            subcategory=Maincategory.objects.get(name=search)
         except:
             subcategory=None
         try:
-            brand=Maincategory.get(name=search)
+            brand=Maincategory.objects.get(name=search)
         except:
             brand=None
+        global product
         product=Product.objects.filter(Q(name__icontains=search)|Q(maincategory=maincategory)|Q(subcategory=subcategory)|Q(brand=brand)|Q(color=search)|Q(description__icontains=search)).order_by("-id")
-        maincategory=Maincategory.objects.all().order_by("-id")
-        subcategory=Subcategory.objects.all().order_by("-id")
-        brands=Brand.objects.all().order_by("-id")
-        paginator = Paginator(product,8)
-        page_number = Request.GET.get("page")
-        page_obj = paginator.get_page(page_number)
-        return render(Request,"shop.html",{"product":page_obj,"maincategory":maincategory,"subcategory":subcategory,"brands":brands,"sc":"All","mc":"All","br":"All"})
-
+    maincategory=Maincategory.objects.all().order_by("-id")
+    subcategory=Subcategory.objects.all().order_by("-id")
+    brands=Brand.objects.all().order_by("-id")
+    paginator = Paginator(product,8)
+    page_number = Request.GET.get("page")
+    page_obj = paginator.get_page(page_number)
+    return render(Request,"shop.html",{"product":page_obj,"maincategory":maincategory,"subcategory":subcategory,"brands":brands,"sc":"All","mc":"All","br":"All"})
 
 def singleproduct(Request,id):
     product=Product.objects.get(id=id)
